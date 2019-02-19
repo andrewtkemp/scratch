@@ -1,36 +1,20 @@
 import * as React from 'react';
 import * as style from "./style.css";
 import {connect} from "react-redux";
-export interface IAppProps {
-   compiler: string,
-   framework: string,
-   bundler: string
-}
-export interface IAppState {
-   compiler: string,
-   framework: string,
-   bundler: string
-}
-export interface IMapStateToProps {
-   app:IAppProps
-}
-export class App extends React.Component<IAppProps, IAppState> {
-   state = {
-      compiler: "",
-      framework: "",
-      bundler: ""
+import {IAppProps, IMapStateToProps, IMapDispatchToProps} from "./types";
+import {fetchRequest, fetchSuccess, fetchError, Info } from "../../store/App";
+export class App extends React.Component<IAppProps, {}> {
+   componentDidMount(){
+      this.props.fetchRequest();
    }
    render() {
-   return <h1 className={style.barBaz}>This is a {this.props.framework} application using    {this.props.compiler} with {this.props.bundler}</h1>
+   return <h1 className={style.barBaz}>Hello</h1>
    } 
 }
 
-const mapStateToProps = (state:IMapStateToProps) => {
-   console.log(state);
-   return {
-      compiler:state.app.compiler,
-      framework:state.app.framework,
-      bundler:state.app.bundler
-   }
-}
-export default connect(mapStateToProps)(App);
+const mapStateToProps = (state:IMapStateToProps) => ({
+   app:state.app
+})
+export default connect<IMapStateToProps, IMapDispatchToProps>(mapStateToProps,{
+   fetchRequest:fetchRequest
+ })(App);

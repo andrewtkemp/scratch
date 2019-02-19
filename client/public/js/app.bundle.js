@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9256c6b16a464a53718f";
+/******/ 	var hotCurrentHash = "e5ab389f607ffbc8151e";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -30246,38 +30246,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var style = __webpack_require__(/*! ./style.css */ "./src/components/app/style.css");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var App_1 = __webpack_require__(/*! ../../store/App */ "./src/store/App/index.tsx");
 var App = (function (_super) {
     __extends(App, _super);
     function App() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = {
-            compiler: "",
-            framework: "",
-            bundler: ""
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    App.prototype.componentDidMount = function () {
+        this.props.fetchRequest();
+    };
     App.prototype.render = function () {
-        return React.createElement("h1", { className: style.barBaz },
-            "This is a ",
-            this.props.framework,
-            " application using    ",
-            this.props.compiler,
-            " with ",
-            this.props.bundler);
+        return React.createElement("h1", { className: style.barBaz }, "Hello");
     };
     return App;
 }(React.Component));
 exports.App = App;
-var mapStateToProps = function (state) {
-    console.log(state);
-    return {
-        compiler: state.app.compiler,
-        framework: state.app.framework,
-        bundler: state.app.bundler
-    };
-};
-exports.default = react_redux_1.connect(mapStateToProps)(App);
+var mapStateToProps = function (state) { return ({
+    app: state.app
+}); };
+exports.default = react_redux_1.connect(mapStateToProps, {
+    fetchRequest: App_1.fetchRequest
+})(App);
 
 
 /***/ }),
@@ -30395,8 +30384,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var typesafe_actions_1 = __webpack_require__(/*! typesafe-actions */ "./node_modules/typesafe-actions/dist/index.umd.js");
 var types_1 = __webpack_require__(/*! ./types */ "./src/store/App/types.tsx");
 exports.fetchRequest = function () { return typesafe_actions_1.action(types_1.FETCH_REQUEST); };
-exports.fetchSuccess = function (data) { return typesafe_actions_1.action(types_1.FETCH_SUCCESS); };
-exports.fetchError = function (message) { return typesafe_actions_1.action(types_1.FETCH_ERROR); };
+exports.fetchSuccess = function (data) { return typesafe_actions_1.action(types_1.FETCH_SUCCESS, data); };
+exports.fetchError = function (message) { return typesafe_actions_1.action(types_1.FETCH_ERROR, message); };
 
 
 /***/ }),
@@ -30444,9 +30433,9 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var types_1 = __webpack_require__(/*! ./types */ "./src/store/App/types.tsx");
 var initialState = {
-    compiler: "Typescripts",
-    framework: "ReactJSs",
-    bundler: "Webpacks"
+    compiler: "Typescript",
+    framework: "ReactJS",
+    bundler: "Webpack"
 };
 var reducer = function (state, action) {
     if (state === void 0) { state = initialState; }
@@ -30455,6 +30444,7 @@ var reducer = function (state, action) {
             return __assign({}, state);
         }
         case types_1.FETCH_SUCCESS: {
+            console.log(action.payload);
             return __assign({}, state);
         }
         case types_1.FETCH_ERROR: {

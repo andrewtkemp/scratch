@@ -13,7 +13,8 @@ const reducer: Reducer<AppState> = (state = initialState, action) => {
             return { ...state }
         }
         case FETCH_SUCCESS: {
-            return { ...state }
+            console.log(action.payload);
+            return {...state, compiler:action.payload.compiler}
         }
         case FETCH_ERROR: {
             return { ...state }
